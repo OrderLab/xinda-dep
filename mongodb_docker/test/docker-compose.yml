@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  mongodb-standalone1:
+    image: mongo:5-focal
+    container_name: mongodb-standalone1
+    ports:
+      - "27015:27017"
+    volumes:
+      - mongodb_standalone_data1:/data/db
+
+  mongodb-standalone2:
+    image: mongo:5-focal
+    container_name: mongodb-standalone2
+    ports:
+      - "27016:27017"
+    volumes:
+      - mongodb_standalone_data2:/data/db
+
+volumes:
+  mongodb_standalone_data1:
+  mongodb_standalone_data2:
