@@ -15,14 +15,14 @@
 ```
 The database takes some time to initialize cluster nodes. If you check status immediately after `./up.sh`, it normally fails. Try again in a few seconds.
 ## Connect to sql
-You can connect to sql of `sql_host_id` from container `docker_id`:
+You can connect to sql of `roach_id` (from container `roach0` which serves as bystander outside the cluster):
 ```
-./sql.sh [docker_id] [sql_host_id]
+./sql.sh [roach_id]
 ```
 The following two commands are equivalent.
 ```
-./sql.sh 1 2
-docker exec -it roach1 ./cockroach sql --host=roach2:26257 --insecure
+./sql.sh 2
+docker exec -it roach0 ./cockroach sql --host=roach2:26257 --insecure
 ```
 
 ## DB operations
@@ -36,3 +36,18 @@ DELETE FROM bank.accounts WHERE id = 2;
 ```
 
 ## Run workload
+First load workload.
+```
+./ycsb.sh load
+./sql.sh
+SELECT COUNT(*) FROM ycsb.usertable;
+```
+Then run workload.
+```
+./ycsb.sh run
+```
+
+## References
+[Start a multi-node cluster](https://www.cockroachlabs.com/docs/v23.1/start-a-local-cluster-in-docker-mac)
+
+[cockroach workload](https://www.cockroachlabs.com/docs/stable/cockroach-workload)
